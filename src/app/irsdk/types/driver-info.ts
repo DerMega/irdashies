@@ -38,6 +38,7 @@ export interface Driver {
    CarSponsor_2: number;
    CurDriverIncidentCount: number;
    TeamIncidentCount: number;
+   Speed: number;
 }
 
 export interface DriverInfo {
