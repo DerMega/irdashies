@@ -1,6 +1,6 @@
-import { SpeakerHigh } from '@phosphor-icons/react';
-import { getTailwindStyle } from '../../../utils/colors';
-import { formatTime } from '../../../utils/time';
+import { SpeakerHighIcon } from '@phosphor-icons/react';
+import { getTailwindStyle } from '@irdashies/utils/colors';
+import { formatTime } from '@irdashies/utils/time';
 
 interface DriverRowInfoProps {
   carIdx: number;
@@ -70,7 +70,7 @@ export const DriverInfoRow = ({
             <span
               className={`animate-pulse transition-[width] duration-300 ${radioActive ? 'w-4 mr-1' : 'w-0 overflow-hidden'}`}
             >
-              <SpeakerHigh className="mt-[1px]" size={16} />
+              <SpeakerHighIcon className="mt-[1px]" size={16} />
             </span>
             <span className="truncate">{name}</span>
           </div>

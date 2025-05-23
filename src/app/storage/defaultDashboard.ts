@@ -65,9 +65,19 @@ export const defaultDashboard: DashboardLayout = {
       layout: {
         x: 1000,
         y: 1000,
-        width: 150,
-        height: 330,
+        width: 160,
+        height: 380,
       },
     },
+    {
+      id: 'fastercarsfrombehind',
+      enabled: false,
+      layout: {
+        x: 700,
+        y: 200,
+        width: 400,
+        height: 40,
+      },
+    }
   ],
 };
