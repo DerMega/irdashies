@@ -4,6 +4,7 @@ import { DriverRatingBadge } from '../DriverRatingBadge/DriverRatingBadge';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { SessionBar } from '../SessionBar/SessionBar';
 import { SessionFooter } from '../SessionFooter/SessionFooter';
+import { RatingChange } from '../RatingChange/RatingChange';
 
 export default {
   component: DriverInfoRow,
@@ -101,6 +102,30 @@ export const IsLappingAhead: Story = {
   args: {
     ...Primary.args,
     isLappingAhead: true,
+  },
+};
+
+export const IRatingChange: Story = {
+  name: 'iRating Positive Change',
+  args: {
+    ...Primary.args,
+    iratingChange: <RatingChange value={10} />,
+  },
+};
+
+export const IRatingChangeNegative: Story = {
+  name: 'iRating Negative Change',
+  args: {
+    ...Primary.args,
+    iratingChange: <RatingChange value={-58} />,
+  },
+};
+
+export const IRatingNoChange: Story = {
+  name: 'iRating No Change',
+  args: {
+    ...Primary.args,
+    iratingChange: <RatingChange value={0} />,
   },
 };
 

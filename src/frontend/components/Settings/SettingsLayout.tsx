@@ -1,5 +1,5 @@
 import { GearIcon, LockIcon, LockOpenIcon, PresentationChartIcon } from '@phosphor-icons/react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { StandingsSettings } from './sections/StandingsSettings';
 import { RelativeSettings } from './sections/RelativeSettings';
 import { WeatherSettings } from './sections/WeatherSettings';
@@ -7,12 +7,14 @@ import { TrackMapSettings } from './sections/TrackMapSettings';
 import { AdvancedSettings } from './sections/AdvancedSettings';
 import { InputSettings } from './sections/InputSettings';
 import { AboutSettings } from './sections/AboutSettings';
+import { FasterCarsFromBehindSettings } from './sections/FasterCarsFromBehindSettings';
+import { GeneralSettings } from './sections/GeneralSettings';
 import { useDashboard } from '@irdashies/context';
 import { useState } from 'react';
 
 export const SettingsLayout = () => {
   const location = useLocation();
-  const { bridge, editMode, isDemoMode, toggleDemoMode } = useDashboard();
+  const { bridge, editMode, isDemoMode, toggleDemoMode, currentDashboard } = useDashboard();
   const [isLocked, setIsLocked] = useState(!editMode);
 
   const isActive = (path: string) => {
@@ -28,6 +30,10 @@ export const SettingsLayout = () => {
     const locked = await bridge.toggleLockOverlays();
     setIsLocked(locked);
   };
+
+  if (!currentDashboard) {
+    return <>Loading...</>;
+  }
 
   return (
     <div className="flex flex-col gap-4 bg-slate-700 p-4 rounded-md w-full h-full">
@@ -76,6 +82,11 @@ export const SettingsLayout = () => {
         <div className="w-1/3 bg-slate-800 p-4 rounded-md flex flex-col overflow-y-auto">
           <ul className="flex flex-col gap-2 flex-1">
             <li>
+              <Link to="/settings/general" className={menuItemClass('/general')}>
+                General
+              </Link>
+            </li>
+            <li>
               <Link to="/settings/input" className={menuItemClass('/input')}>
                 Input Traces
               </Link>
@@ -105,7 +116,15 @@ export const SettingsLayout = () => {
               </Link>
             </li>
             <li>
-              <Link to="/settings/map" className={menuItemClass('/track-map')}>
+              <Link
+                to="/settings/faster-cars"
+                className={menuItemClass('/faster-cars')}
+              >
+                Faster Cars
+              </Link>
+            </li>
+            <li>
+              <Link to="/settings/map" className={menuItemClass('/map')}>
                 <div className="flex flex-row gap-2 items-center">
                   Track Map
                   <span className="text-xs bg-yellow-600 text-yellow-100 px-2 py-0.5 rounded-full flex flex-row gap-1 items-center">
@@ -135,11 +154,14 @@ export const SettingsLayout = () => {
         {/* Right Column - Widget Settings */}
         <div className="w-2/3 bg-slate-800 p-4 rounded-md flex flex-col overflow-hidden">
           <Routes>
+            <Route path="/" element={<Navigate to="/settings/general" replace />} />
+            <Route path="general" element={<GeneralSettings />} />
             <Route path="standings" element={<StandingsSettings />} />
             <Route path="relative" element={<RelativeSettings />} />
             <Route path="weather" element={<WeatherSettings />} />
             <Route path="map" element={<TrackMapSettings />} />
             <Route path="input" element={<InputSettings />} />
+            <Route path="faster-cars" element={<FasterCarsFromBehindSettings />} />
             <Route path="advanced" element={<AdvancedSettings />} />
             <Route path="about" element={<AboutSettings />} />
             <Route

@@ -3,6 +3,7 @@ import {
   useDriverCarIdx,
   useSessionDrivers,
   useSessionFastestLaps,
+  useSessionIsOfficial,
   useSessionPositions,
   useSessionQualifyingResults,
   useSessionType,
@@ -13,6 +14,7 @@ import {
   createDriverStandings,
   groupStandingsByClass,
   sliceRelevantDrivers,
+  augmentStandingsWithIRating,
 } from '../createStandings';
 
 export const useDriverStandings = ({ buffer }: { buffer: number }) => {
@@ -27,9 +29,10 @@ export const useDriverStandings = ({ buffer }: { buffer: number }) => {
   const carIdxOnPitRoad = useTelemetry<boolean[]>('CarIdxOnPitRoad');
   const carIdxTrackSurface = useTelemetry('CarIdxTrackSurface');
   const radioTransmitCarIdx = useTelemetry('RadioTransmitCarIdx');
+  const isOfficial = useSessionIsOfficial();
 
-  const standings = useMemo(() => {
-    const standings = createDriverStandings(
+  const standingsWithGain = useMemo(() => {
+    const initialStandings = createDriverStandings(
       {
         playerIdx: driverCarIdx,
         drivers: sessionDrivers,
@@ -47,8 +50,15 @@ export const useDriverStandings = ({ buffer }: { buffer: number }) => {
         sessionType,
       }
     );
-    const grouped = groupStandingsByClass(standings);
-    return sliceRelevantDrivers(grouped, { buffer });
+    const groupedByClass = groupStandingsByClass(initialStandings);
+
+    // Calculate iRating changes for race sessions
+    const augmentedGroupedByClass =
+      sessionType === 'Race' && isOfficial
+        ? augmentStandingsWithIRating(groupedByClass)
+        : groupedByClass;
+
+    return sliceRelevantDrivers(augmentedGroupedByClass, { buffer });
   }, [
     driverCarIdx,
     sessionDrivers,
@@ -60,8 +70,9 @@ export const useDriverStandings = ({ buffer }: { buffer: number }) => {
     positions,
     fastestLaps,
     sessionType,
+    isOfficial,
     buffer,
   ]);
 
-  return standings;
+  return standingsWithGain;
 };

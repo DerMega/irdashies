@@ -1,4 +1,6 @@
-import { SpeakerHighIcon } from '@phosphor-icons/react';
+import {
+  SpeakerHighIcon,
+} from '@phosphor-icons/react';
 import { getTailwindStyle } from '@irdashies/utils/colors';
 import { formatTime } from '@irdashies/utils/time';
 
@@ -12,6 +14,7 @@ interface DriverRowInfoProps {
   delta?: number;
   position: number;
   badge: React.ReactNode;
+  iratingChange?: React.ReactNode;
   lastTime?: number;
   fastestTime?: number;
   onPitRoad?: boolean;
@@ -38,6 +41,7 @@ export const DriverInfoRow = ({
   radioActive,
   isLapped,
   isLappingAhead,
+  iratingChange,
 }: DriverRowInfoProps) => {
   // convert seconds to mm:ss:ms
   const lastTimeString = formatTime(lastTime);
@@ -82,6 +86,11 @@ export const DriverInfoRow = ({
         </div>
       </td>
       <td>{badge}</td>
+      {iratingChange !== undefined && (
+        <td className="px-2 text-left">
+          {iratingChange}
+        </td>
+      )}
       <td className={`px-2`}>{delta?.toFixed(1)}</td>
       <td className={`px-2 ${hasFastestTime ? 'text-purple-400' : ''}`}>
         {fastestTimeString}
