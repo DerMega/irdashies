@@ -11,6 +11,13 @@ export const defaultDashboard: DashboardLayout = {
         width: 400,
         height: 600,
       },
+      config: {
+        iRatingChange: { enabled: true },
+        badge: { enabled: true },
+        delta: { enabled: true },
+        lastTime: { enabled: true },
+        fastestTime: { enabled: true },
+      },
     },
     {
       id: 'input',
@@ -47,6 +54,9 @@ export const defaultDashboard: DashboardLayout = {
         y: 759,
         width: 400,
         height: 296,
+      },
+      config: {
+        buffer: 3,
       },
     },
     {
